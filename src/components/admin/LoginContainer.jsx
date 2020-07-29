@@ -1,0 +1,89 @@
+import React from "react";
+import { Form, Input, Button, Checkbox, Typography, Row, Col } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import colors from "../../config/colors";
+
+const { Title, Text } = Typography;
+
+const onFinish = (values) => {
+  console.log("Received values of form: ", values);
+};
+
+function LoginContainer() {
+  return (
+    <>
+      <div
+        style={{
+          backgroundColor: colors.dark,
+          width: 400,
+          position: "relative",
+          left: 200,
+          opacity: 0.8,
+          height: 400,
+          marginTop: 100,
+        }}
+      />
+      <div
+        style={{
+          width: 400,
+          height: 400,
+          marginTop: 100,
+          padding: 50,
+          position: "relative",
+          right: 200,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
+        <div style={{ textAlign: "center", marginBottom: 30 }}>
+          <Text style={{ color: colors.white, fontSize: "1.4em" }} level={4}>
+            Machinery
+          </Text>
+          <p>Administration</p>
+        </div>
+
+        <Form
+          name="normal_login"
+          className="login-form"
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+        >
+          <Form.Item
+            name="email"
+            rules={[{ required: true, message: "Please input your email!" }]}
+          >
+            <Input
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              placeholder="Email"
+            />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[{ required: true, message: "Please input your Password!" }]}
+          >
+            <Input
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder="Password"
+            />
+          </Form.Item>
+          <Form.Item>
+            <Form.Item name="remember" valuePropName="checked" noStyle>
+              <Checkbox>Remember me</Checkbox>
+            </Form.Item>
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
+              Log in
+            </Button>
+            Or <a href="">register now!</a>
+          </Form.Item>
+        </Form>
+      </div>
+    </>
+  );
+}
+
+export default LoginContainer;

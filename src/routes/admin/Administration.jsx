@@ -40,6 +40,8 @@ function Administration() {
               path={routes.ADMIN_MANUFUCTURER_NEW}
               component={ManufucturerNew}
             />
+            <Redirect exact from={routes.ADMIN} to={routes.ADMIN_MACHINES} />
+            <Redirect exact from="/" to={routes.ADMIN_MACHINES} />
           </Switch>
         </Content>
       </Layout>

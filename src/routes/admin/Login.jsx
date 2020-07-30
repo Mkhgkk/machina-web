@@ -5,6 +5,7 @@ import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import colors from "../../config/colors";
 import routes from "../routes";
 import authService from "../../services/authService";
+import { Redirect } from "react-router-dom";
 
 const { Text } = Typography;
 
@@ -20,6 +21,8 @@ const onFinish = async (values) => {
 };
 
 function Login() {
+  if (authService.getCurrentUser())
+    return <Redirect to={routes.ADMIN_MACHINES} />;
   return (
     <Row
       justify="center"

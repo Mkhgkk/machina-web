@@ -53,23 +53,21 @@ function ManufucturerDetail() {
     setLoading(true);
     try {
       const result = await ManufucturerService.saveManufucturer(values, id);
-
       if (result) {
         setData(result.data);
         setEdit(false);
-        setLoading(false);
       }
     } catch (ex) {
       if (ex.response && ex.response.status === 400)
         message.error(ex.response.data);
     }
+    setLoading(false);
   };
 
   const handleDelete = async () => {
     try {
       await ManufucturerService.deleteManufucturer(id);
       history.push(routes.ADMIN_MANUFUCTURERS);
-      // window.location.replace(routes.ADMIN_MANUFUCTURERS);
     } catch (ex) {
       logService.log(ex);
     }

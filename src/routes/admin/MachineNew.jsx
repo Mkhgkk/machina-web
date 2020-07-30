@@ -12,6 +12,7 @@ import {
   Radio,
   message,
   Spin,
+  InputNumber,
 } from "antd";
 import {
   PlusOutlined,
@@ -151,11 +152,20 @@ function MachineNew() {
                 rules={[
                   {
                     required: true,
-                    message: "Please select minimum quantity",
+                    message: "Please enter minimum quantity",
+                  },
+                  {
+                    type: "number",
+                    min: 0,
+                    message: "Please enter number",
                   },
                 ]}
               >
-                <Input placeholder="Please enter minimum quantity" />
+                <InputNumber
+                  style={{ width: "100%" }}
+                  placeholder="Please enter minimum quantity"
+                  min={0}
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -251,9 +261,25 @@ function MachineNew() {
                                 required: true,
                                 message: "Please enter price",
                               },
+                              {
+                                type: "number",
+                                min: 0,
+                                message: "Please enter price",
+                              },
                             ]}
                           >
-                            <Input placeholder="Please enter price" />
+                            <InputNumber
+                              style={{ width: "100%" }}
+                              formatter={(value) =>
+                                `$ ${value}`.replace(
+                                  /\B(?=(\d{3})+(?!\d))/g,
+                                  ","
+                                )
+                              }
+                              parser={(value) =>
+                                value.replace(/\$\s?|(,*)/g, "")
+                              }
+                            />
                           </Form.Item>
                         </Col>
                       </Row>
@@ -265,7 +291,10 @@ function MachineNew() {
                             fieldKey={[field.fieldKey, "weight"]}
                             label="Weight"
                           >
-                            <Input placeholder="Please enter weight" />
+                            <Input
+                              suffix="kg"
+                              placeholder="Please enter weight"
+                            />
                           </Form.Item>
                         </Col>
                         <Col span={12}>
@@ -275,7 +304,10 @@ function MachineNew() {
                             fieldKey={[field.fieldKey, "power"]}
                             label="Power"
                           >
-                            <Input placeholder="Please enter power" />
+                            <Input
+                              suffix="watts"
+                              placeholder="Please enter power"
+                            />
                           </Form.Item>
                         </Col>
                       </Row>
@@ -297,7 +329,10 @@ function MachineNew() {
                             fieldKey={[field.fieldKey, "warranty"]}
                             label="Warranty"
                           >
-                            <Input placeholder="Please enter warranty" />
+                            <Input
+                              placeholder="Please enter warranty"
+                              suffix="years"
+                            />
                           </Form.Item>
                         </Col>
                       </Row>

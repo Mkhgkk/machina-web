@@ -36,11 +36,13 @@ function SideBar() {
         mode="inline"
         defaultSelectedKeys={pathname}
         defaultOpenKeys={
-          pathname === routes.ADMIN_MACHINES ||
-          pathname === routes.ADMIN_MACHINE_NEW ||
-          pathname === routes.ADMIN_MACHINE_DETAIL
+          pathname.includes(routes.ADMIN_MACHINE_NEW) ||
+          pathname.includes(routes.ADMIN_MACHINES)
             ? ["machine"]
-            : ["manufucturer"]
+            : pathname.includes(routes.ADMIN_MANUFUCTURER_NEW) ||
+              pathname.includes(routes.ADMIN_MANUFUCTURERS)
+            ? ["manufucturer"]
+            : ["machine", "manufucturer"]
         }
       >
         <SubMenu key="machine" title="Machine" icon={<ControlOutlined />}>

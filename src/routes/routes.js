@@ -1,4 +1,5 @@
 export default Object.freeze({
+  ADMIN: "/admin",
   ADMIN_LOGIN: "/admin/login",
   ADMIN_REGISTER: "/admin/register",
 

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Table, Input, Button, Space, Typography } from "antd";
-import Highlighter from "react-highlight-words";
 import { SearchOutlined, ControlOutlined } from "@ant-design/icons";
 import colors from "../../config/colors";
 import { categories } from "../../data/enums";
@@ -32,8 +31,8 @@ class MachineList extends Component {
   componentDidMount = async () => {
     this.setState({ loading: true });
     try {
-      const { data } = await MachineSerive.getMachines();
-      this.setState({ data, loading: false });
+      const result = await MachineSerive.getMachines();
+      if (result) this.setState({ data: result.data, loading: false });
     } catch (ex) {
       logService.log(ex);
     }
@@ -51,7 +50,11 @@ class MachineList extends Component {
           ref={(node) => {
             this.searchInput = node;
           }}
-          placeholder={`Search ${dataIndex}`}
+          placeholder={
+            Array.isArray(dataIndex)
+              ? `Search ${dataIndex[0]}`
+              : `Search ${dataIndex}`
+          }
           value={selectedKeys[0]}
           onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
@@ -82,10 +85,19 @@ class MachineList extends Component {
       </div>
     ),
     filterIcon: (filtered) => (
-      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+      <SearchOutlined
+        style={{ color: filtered ? colors.secondary : undefined }}
+      />
     ),
     onFilter: (value, record) =>
-      record[dataIndex]
+      Array.isArray(dataIndex)
+        ? record[dataIndex[0]][dataIndex[1]]
+          ? record[dataIndex[0]][dataIndex[1]]
+              .toString()
+              .toLowerCase()
+              .includes(value.toLowerCase())
+          : ""
+        : record[dataIndex]
         ? record[dataIndex]
             .toString()
             .toLowerCase()
@@ -96,17 +108,6 @@ class MachineList extends Component {
         setTimeout(() => this.searchInput.select());
       }
     },
-    render: (text) =>
-      this.state.searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{ backgroundColor: colors.secondary, padding: 0 }}
-          searchWords={[this.state.searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ""}
-        />
-      ) : (
-        text
-      ),
   });
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -134,10 +135,11 @@ class MachineList extends Component {
       },
       {
         title: "Manufucturer",
-        dataIndex: "manufucturer",
+        dataIndex: ["manufucturer", "name"],
         key: "manufucturer",
-        ...this.getColumnSearchProps("manufucturer"),
-        sorter: (a, b) => a.manufucturer.length - b.manufucturer.length,
+        ...this.getColumnSearchProps(["manufucturer", "name"]),
+        sorter: (a, b) =>
+          a.manufucturer.name.length - b.manufucturer.name.length,
         sortDirections: ["descend", "ascend"],
       },
       {
@@ -145,8 +147,8 @@ class MachineList extends Component {
         dataIndex: "category",
         key: "category",
         filters: factoryArray(categories),
-        onFilter: (value, record) => record.manufucturer.indexOf(value) === 0,
-        sorter: (a, b) => a.manufucturer.length - b.manufucturer.length,
+        onFilter: (value, record) => record.category.indexOf(value) === 0,
+        sorter: (a, b) => a.category.length - b.category.length,
         sortDirections: ["descend", "ascend"],
       },
       {

@@ -6,6 +6,7 @@ import colors from "../../config/colors";
 import routes from "../routes";
 import userService from "../../services/userService";
 import authService from "../../services/authService";
+import { Redirect } from "react-router-dom";
 
 const { Text } = Typography;
 
@@ -21,6 +22,8 @@ const onFinish = async (values) => {
 };
 
 function Register() {
+  if (authService.getCurrentUser())
+    return <Redirect to={routes.ADMIN_MACHINES} />;
   return (
     <Row
       justify="center"

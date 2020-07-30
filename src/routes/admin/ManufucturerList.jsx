@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import { Table, Input, Button, Space, Typography } from "antd";
-import Highlighter from "react-highlight-words";
 import { SearchOutlined, ShopOutlined } from "@ant-design/icons";
-import colors from "../../config/colors";
 import { NavLink } from "react-router-dom";
 import routes from "../routes";
 import ManufucturerService from "../../services/manufucturerService";
 import logService from "../../services/logService";
+import colors from "../../config/colors";
 
 const { Link, Title } = Typography;
 
@@ -71,7 +70,9 @@ class ManufucturerList extends Component {
       </div>
     ),
     filterIcon: (filtered) => (
-      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+      <SearchOutlined
+        style={{ color: filtered ? colors.secondary : undefined }}
+      />
     ),
     onFilter: (value, record) =>
       record[dataIndex]
@@ -85,17 +86,6 @@ class ManufucturerList extends Component {
         setTimeout(() => this.searchInput.select());
       }
     },
-    render: (text) =>
-      this.state.searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{ backgroundColor: colors.secondary, padding: 0 }}
-          searchWords={[this.state.searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ""}
-        />
-      ) : (
-        text
-      ),
   });
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {

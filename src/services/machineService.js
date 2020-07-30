@@ -24,12 +24,31 @@ export function createMachine(data) {
     link: data.link,
     images: imageArray,
   };
-  console.log(newData);
+
   return http.post(apiEndPoint, newData);
 }
 
 export function saveMachine(data, id) {
-  return http.put(`${apiEndPoint}/${id}`, data);
+  let imageArray = [];
+
+  if (Array.isArray(data.images)) imageArray = [...data.images];
+  else
+    data.images.fileList.forEach((image) => {
+      image.url ? imageArray.push(image.url) : imageArray.push(image.response);
+    });
+
+  const newData = {
+    title: data.title,
+    description: data.description,
+    manufucturer: data.manufucturer,
+    minimumQuantity: data.minimumQuantity,
+    options: data.options,
+    category: data.category,
+    link: data.link,
+    images: imageArray,
+  };
+
+  return http.put(`${apiEndPoint}/${id}`, newData);
 }
 
 export function deleteMachine(id) {

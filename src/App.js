@@ -16,7 +16,12 @@ function App() {
       <Switch>
         <Route path={routes.ADMIN_LOGIN} component={Login} />
         <Route path={routes.ADMIN_REGISTER} component={Register} />
-        <Route path={routes.ADMIN} component={Administration} />
+        {auth && (
+          <>
+            <Route path={routes.ADMIN} component={Administration} />
+          </>
+        )}
+        <Redirect to={routes.ADMIN_LOGIN} />
       </Switch>
     </UserContext.Provider>
   );

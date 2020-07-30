@@ -1,14 +1,22 @@
 import React from "react";
 import loginBack from "../../assets/loginBack.jpeg";
-import { Form, Input, Button, Checkbox, Typography, Row } from "antd";
-import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons";
+import { Form, Input, Button, Checkbox, Typography, Row, message } from "antd";
+import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import colors from "../../config/colors";
 import routes from "../routes";
+import authService from "../../services/authService";
 
 const { Text } = Typography;
 
-const onFinish = (values) => {
-  console.log("Received values of form: ", values);
+const onFinish = async (values) => {
+  try {
+    await authService.login(values.email, values.password);
+    window.location = routes.ADMIN_MACHINES;
+  } catch (ex) {
+    if (ex.response && ex.response.status === 400) {
+      message.error(ex.response.data);
+    }
+  }
 };
 
 function Login() {

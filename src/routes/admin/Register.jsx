@@ -1,14 +1,23 @@
 import React from "react";
 import registerBack from "../../assets/registerBack.jpeg";
-import { Form, Input, Button, Checkbox, Typography, Row } from "antd";
+import { Form, Input, Button, Typography, Row, message } from "antd";
 import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons";
 import colors from "../../config/colors";
 import routes from "../routes";
+import userService from "../../services/userService";
+import authService from "../../services/authService";
 
 const { Text } = Typography;
 
-const onFinish = (values) => {
-  console.log("Received values of form: ", values);
+const onFinish = async (values) => {
+  try {
+    const response = await userService.register(values);
+    authService.loginWithJwt(response.data);
+    window.location = routes.ADMIN_MACHINES;
+  } catch (ex) {
+    if (ex.response && ex.response.status === 400)
+      message.error(ex.response.data);
+  }
 };
 
 function Register() {

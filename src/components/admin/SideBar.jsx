@@ -1,12 +1,7 @@
 import React from "react";
 import { Layout, Menu, Typography } from "antd";
-import {
-  BarsOutlined,
-  PlusOutlined,
-  ControlOutlined,
-  ShopOutlined,
-} from "@ant-design/icons";
-import { NavLink } from "react-router-dom";
+import { ControlOutlined, ShopOutlined } from "@ant-design/icons";
+import { NavLink, useHistory } from "react-router-dom";
 
 import routes from "../../routes/routes";
 import colors from "../../config/colors";
@@ -16,6 +11,9 @@ const { Sider } = Layout;
 const { SubMenu } = Menu;
 
 function SideBar() {
+  const history = useHistory();
+  const { pathname } = history.location;
+
   return (
     <Sider trigger={null}>
       <div
@@ -33,23 +31,38 @@ function SideBar() {
         <p style={{ fontSize: "0.9em", opacity: 0.7 }}>Administration</p>
       </div>
 
-      <Menu theme="dark" mode="inline" defaultSelectedKeys="1">
-        <SubMenu key="sub1" title="Machine" icon={<ControlOutlined />}>
-          <Menu.Item key="1">
+      <Menu
+        theme="dark"
+        mode="inline"
+        defaultSelectedKeys={pathname}
+        defaultOpenKeys={
+          pathname === routes.ADMIN_MACHINES ||
+          pathname === routes.ADMIN_MACHINE_NEW ||
+          pathname === routes.ADMIN_MACHINE_DETAIL
+            ? ["machine"]
+            : ["manufucturer"]
+        }
+      >
+        <SubMenu key="machine" title="Machine" icon={<ControlOutlined />}>
+          <Menu.Item key={routes.ADMIN_MACHINES}>
             <NavLink to={routes.ADMIN_MACHINES}>Machines</NavLink>
           </Menu.Item>
 
-          <Menu.Item key="2">
+          <Menu.Item key={routes.ADMIN_MACHINE_NEW}>
             <NavLink to={routes.ADMIN_MACHINE_NEW}>Add machine</NavLink>
           </Menu.Item>
         </SubMenu>
 
-        <SubMenu key="sub2" title="Manufucturer" icon={<ShopOutlined />}>
-          <Menu.Item key="3">
+        <SubMenu
+          key="manufucturer"
+          title="Manufucturer"
+          icon={<ShopOutlined />}
+        >
+          <Menu.Item key={routes.ADMIN_MANUFUCTURERS}>
             <NavLink to={routes.ADMIN_MANUFUCTURERS}>Manufucturers</NavLink>
           </Menu.Item>
 
-          <Menu.Item key="4">
+          <Menu.Item key={routes.ADMIN_MANUFUCTURER_NEW}>
             <NavLink to={routes.ADMIN_MANUFUCTURER_NEW}>
               Add manufucturer
             </NavLink>

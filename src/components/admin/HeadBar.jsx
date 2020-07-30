@@ -1,13 +1,30 @@
-import React from "react";
-import { Layout, Menu, Avatar } from "antd";
-// import userDefault from "../../assets/userdefault.png";
+import React, { useContext } from "react";
+import { Layout, Avatar, Modal, Button } from "antd";
 import Text from "antd/lib/typography/Text";
 import colors from "../../config/colors";
 import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
+import authService from "../../services/authService";
+import routes from "../../routes/routes";
+import UserContext from "../../context/UserContext";
 
 const { Header } = Layout;
+const { confirm } = Modal;
+
+const handleLogout = () => {
+  confirm({
+    title: "Would you like to log out?",
+    icon: <LogoutOutlined />,
+    okText: "Logout",
+    onOk() {
+      authService.logout();
+      window.location.replace(routes.ADMIN_LOGIN);
+    },
+  });
+};
 
 function HeadBar() {
+  const { user } = useContext(UserContext);
+
   return (
     <Header
       style={{
@@ -16,12 +33,11 @@ function HeadBar() {
         justifyContent: "flex-end",
       }}
     >
-      <Menu theme="dark" mode="horizontal">
-        <Menu.Item key="2">
-          <LogoutOutlined />
-          logout
-        </Menu.Item>
-      </Menu>
+      <Button type="text" onClick={handleLogout}>
+        <LogoutOutlined />
+        Logout
+      </Button>
+
       <Avatar
         style={{ backgroundColor: colors.primary, marginLeft: 15 }}
         icon={<UserOutlined />}
@@ -33,7 +49,7 @@ function HeadBar() {
           opacity: 0.7,
         }}
       >
-        username
+        {user && user.name}
       </Text>
     </Header>
   );

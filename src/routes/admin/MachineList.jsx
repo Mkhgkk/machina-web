@@ -6,6 +6,8 @@ import colors from "../../config/colors";
 import { categories } from "../../data/enums";
 import { NavLink } from "react-router-dom";
 import routes from "../routes";
+import MachineSerive from "../../services/machineService";
+import logService from "../../services/logService";
 
 const { Link, Title } = Typography;
 
@@ -23,6 +25,18 @@ class MachineList extends Component {
   state = {
     searchText: "",
     searchedColumn: "",
+    loading: false,
+    data: [],
+  };
+
+  componentDidMount = async () => {
+    this.setState({ loading: true });
+    try {
+      const { data } = await MachineSerive.getMachines();
+      this.setState({ data, loading: false });
+    } catch (ex) {
+      logService.log(ex);
+    }
   };
 
   getColumnSearchProps = (dataIndex) => ({
@@ -156,7 +170,7 @@ class MachineList extends Component {
       },
     ];
 
-    const { dataSource } = this.state;
+    const { data, loading } = this.state;
 
     return (
       <div style={{ padding: 40 }}>
@@ -167,9 +181,10 @@ class MachineList extends Component {
         </Title>
 
         <Table
-          dataSource={dataSource}
+          dataSource={data}
           columns={columns}
           pagination={{ pageSize: 8 }}
+          loading={loading}
         />
       </div>
     );

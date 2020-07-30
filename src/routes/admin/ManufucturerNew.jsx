@@ -1,17 +1,40 @@
-import React from "react";
-import { Typography, Space, Row, Col, Input, Form, Button } from "antd";
+import React, { useState } from "react";
+import {
+  Typography,
+  Space,
+  Row,
+  Col,
+  Input,
+  Form,
+  Button,
+  message,
+} from "antd";
 import {
   PlusOutlined,
   InfoCircleOutlined,
   MinusCircleOutlined,
 } from "@ant-design/icons";
 import TitleWithIcon from "../../components/admin/TitleWithIcon";
-
 import colors from "../../config/colors";
+import manufucturerService from "../../services/manufucturerService";
+import routes from "../routes";
+import { useHistory } from "react-router-dom";
 
 const { Text, Title } = Typography;
 
 function ManufucturerNew() {
+  const history = useHistory();
+
+  const handleSubmit = async (values) => {
+    try {
+      await manufucturerService.createManufucturer(values);
+      message.success(`${values.name} has been created successfully.`);
+      history.push(routes.ADMIN_MANUFUCTURERS);
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400)
+        message.error(ex.response.data);
+    }
+  };
   return (
     <div style={{ padding: 40 }}>
       <Title level={3}>
@@ -26,7 +49,7 @@ function ManufucturerNew() {
         name="dynamic_form_item"
         layout="vertical"
         hideRequiredMark
-        onFinish={(values) => console.log(values)}
+        onFinish={handleSubmit}
       >
         <TitleWithIcon title="Manufucturer" icon={<InfoCircleOutlined />} />
         <Row gutter={16}>

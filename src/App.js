@@ -9,7 +9,7 @@ import authService from "./services/authService";
 import UserContext from "./context/UserContext";
 
 function App() {
-  const [auth, setAuth] = useState(authService.getCurrentUser());
+  const [auth] = useState(authService.getCurrentUser());
 
   return (
     <UserContext.Provider value={{ user: auth }}>

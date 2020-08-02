@@ -36,7 +36,7 @@ function ManufucturerDetail() {
 
   useEffect(() => {
     getData();
-  }, []);
+  });
 
   const getData = async () => {
     setLoading(true);

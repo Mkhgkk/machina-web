@@ -63,7 +63,7 @@ function MachineDetail() {
   useEffect(() => {
     getData();
     getManufacturers();
-  }, []);
+  });
 
   const getData = async () => {
     setLoading(true);

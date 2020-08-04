@@ -3,7 +3,7 @@ import logger from "./logService";
 import { message } from "antd";
 
 // axios.defaults.baseURL = process.env.REACT_APP_API_URL;
-axios.defaults.baseURL = "http://localhost:3900/api";
+axios.defaults.baseURL = "http://172.105.41.52:3900/api";
 
 axios.interceptors.response.use(null, (error) => {
   const expectedError =

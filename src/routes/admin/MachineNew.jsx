@@ -28,6 +28,7 @@ import MachineService from "../../services/machineService";
 import routes from "../routes";
 import ManufucturerService from "../../services/manufucturerService";
 import logService from "../../services/logService";
+import api from "../../config.json";
 
 const { Text, Title } = Typography;
 const { Option } = Select;
@@ -196,7 +197,7 @@ function MachineNew() {
                 >
                   <Upload.Dragger
                     name="images"
-                    action="http://localhost:3900/api/images"
+                    action={api.apiUrl + "/images"}
                     multiple
                   >
                     <p className="ant-upload-drag-icon">

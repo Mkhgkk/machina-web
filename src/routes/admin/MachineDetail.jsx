@@ -31,6 +31,7 @@ import logService from "../../services/logService";
 import { useHistory, useParams } from "react-router-dom";
 import routes from "../routes";
 import ManufucturerService from "../../services/manufucturerService";
+import api from "../../config.json";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -63,7 +64,7 @@ function MachineDetail() {
   useEffect(() => {
     getData();
     getManufacturers();
-  });
+  }, []);
 
   const getData = async () => {
     setLoading(true);
@@ -472,7 +473,7 @@ function MachineDetail() {
                     <Form.Item name="images" noStyle>
                       <Upload
                         name="images"
-                        action="http://localhost:3900/api/images"
+                        action={api.apiUrl + "/images"}
                         listType="picture-card"
                         fileList={fileList}
                         onChange={handleChangeImage}
